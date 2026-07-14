@@ -96,3 +96,10 @@ cases:
     isnow: "*/*/15 5 12:00"
     at: "2026-07-15T12:00:00Z"
     holds: false
+  # v0.2: numeric weekday spans render as names; numeric step anchors stay numeric
+  - name: numeric-weekday-span-renders-names
+    isnow: "*/*/* 2-6 12:00"
+    canonical: "*/*/* Monday-Friday 12:00:00"
+  - name: numeric-weekday-step-anchor-stays-numeric
+    isnow: "*/*/* 2+[1] 12:00"
+    canonical: "*/*/* 2+[1] 12:00:00"

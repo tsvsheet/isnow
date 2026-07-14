@@ -65,3 +65,28 @@ cases:
   - name: error-numeric-weekday-without-three-groups
     isnow: "2 12:00"
     error: context
+  # v0.2 guards: silent-wrong footguns are now hard errors (semantics.md §Algebra)
+  - name: error-step-stride-exceeds-minute-cycle
+    isnow: ":0+[90]"
+    error: range
+  - name: error-step-stride-exceeds-hour-cycle
+    isnow: "0+[25]"
+    error: range
+  - name: error-from-end-longer-than-cycle
+    isnow: "*/*/-40 *:*:00"
+    error: range
+  - name: error-from-end-zero
+    isnow: "*/*/-0 *:*:00"
+    error: range
+  - name: error-occurrence-index-zero
+    isnow: "Monday+[0] noon"
+    error: range
+  - name: error-occurrence-index-above-five
+    isnow: "Monday+[6] noon"
+    error: range
+  - name: error-week-stride-too-large
+    isnow: "*/*/+[99w] noon"
+    error: range
+  - name: error-magnitude-overflow
+    isnow: ":0+[99999999999999999999]"
+    error: range
