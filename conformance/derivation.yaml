@@ -1,0 +1,62 @@
+# Occurrence derivation: next / prev (specs/contracts/library-api.md, semantics §Evaluation).
+cases:
+  - name: next-daily-six-rolls-to-tomorrow
+    isnow: "6"
+    from: "2026-07-14T07:00:00Z"
+    next:
+      - "2026-07-15T06:00:00Z"
+  - name: next-daily-six-same-day
+    isnow: "6"
+    from: "2026-07-14T05:00:00Z"
+    next:
+      - "2026-07-14T06:00:00Z"
+  - name: next-three-quarter-hours
+    isnow: ":0+[15]"
+    from: "2026-07-14T09:07:00Z"
+    next:
+      - "2026-07-14T09:15:00Z"
+      - "2026-07-14T09:30:00Z"
+      - "2026-07-14T09:45:00Z"
+  - name: next-fixed-instant-christmas-midnight
+    isnow: "12/25 midnight"
+    from: "2026-06-01T00:00:00Z"
+    next:
+      - "2026-12-25T00:00:00Z"
+  - name: next-last-thursday-november
+    isnow: "11/ Th-[1] noon"
+    from: "2026-01-01T00:00:00Z"
+    next:
+      - "2026-11-26T12:00:00Z"
+  - name: next-third-monday-across-months
+    isnow: "Monday+[3] noon"
+    from: "2026-01-20T00:00:00Z"
+    next:
+      - "2026-02-16T12:00:00Z"
+      - "2026-03-16T12:00:00Z"
+  - name: next-fridays
+    isnow: "F midnight"
+    from: "2026-07-14T00:00:00Z"
+    next:
+      - "2026-07-17T00:00:00Z"
+      - "2026-07-24T00:00:00Z"
+  - name: prev-daily-six
+    isnow: "6"
+    from: "2026-07-14T07:00:00Z"
+    prev:
+      - "2026-07-14T06:00:00Z"
+      - "2026-07-13T06:00:00Z"
+  - name: prev-last-thursday-november
+    isnow: "11/ Th-[1] noon"
+    from: "2026-12-01T00:00:00Z"
+    prev:
+      - "2026-11-26T12:00:00Z"
+  # bounded pattern has no occurrence past its window
+  - name: next-none-past-until-bound
+    isnow: "12 <2016"
+    from: "2020-01-01T00:00:00Z"
+    next: []
+  - name: next-honors-since-bound
+    isnow: "noon >=2027"
+    from: "2026-01-01T00:00:00Z"
+    next:
+      - "2027-01-01T12:00:00Z"

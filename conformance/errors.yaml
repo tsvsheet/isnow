@@ -1,0 +1,67 @@
+# Rejected inputs, by stable error code (specs/contracts/semantics.md; codes:
+# syntax, symbol, range, context).
+cases:
+  # syntax — the grammar rejects the token stream
+  - name: error-unclosed-step
+    isnow: "M+[3"
+    error: syntax
+  - name: error-bare-operator
+    isnow: ">="
+    error: syntax
+  - name: error-double-slash-garbage
+    isnow: "//$"
+    error: syntax
+  # symbol — unknown or ambiguous name/unit
+  - name: error-ambiguous-t
+    isnow: "T noon"
+    error: symbol
+  - name: error-ambiguous-s
+    isnow: "S noon"
+    error: symbol
+  - name: error-ambiguous-mid
+    isnow: "mid"
+    error: symbol
+  - name: error-unknown-weekday
+    isnow: "Xy noon"
+    error: symbol
+  - name: error-unknown-unit
+    isnow: "*/*/5x *:*:00"
+    error: symbol
+  # range — value outside the field domain
+  - name: error-hour-out-of-range
+    isnow: "25"
+    error: range
+  - name: error-minute-out-of-range
+    isnow: ":61"
+    error: range
+  - name: error-month-out-of-range
+    isnow: "/13/ *:*:00"
+    error: range
+  - name: error-descending-year-span
+    isnow: "2016-2011// *:*:00"
+    error: range
+  - name: error-bound-hour-out-of-range
+    isnow: "12 >=25"
+    error: range
+  # context — grammatical but semantically invalid
+  - name: error-unbounded-year-from-end
+    isnow: "-1// *:*:00"
+    error: context
+  - name: error-weekday-in-bound
+    isnow: "noon >=M"
+    error: context
+  - name: error-set-in-bound
+    isnow: "noon >=6,12"
+    error: context
+  - name: error-two-bare-groups-same-slot
+    isnow: "6 7"
+    error: context
+  - name: error-time-symbol-with-time-group
+    isnow: "noon 6:00"
+    error: context
+  - name: error-open-low-span
+    isnow: "*-5"
+    error: context
+  - name: error-numeric-weekday-without-three-groups
+    isnow: "2 12:00"
+    error: context

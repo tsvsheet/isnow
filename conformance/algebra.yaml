@@ -1,0 +1,174 @@
+# The uniform per-field algebra (specs/contracts/semantics.md §Algebra semantics).
+# All at/holds cases evaluate in the offset given.
+cases:
+  # wildcard
+  - name: wildcard-hour-holds-any-hour
+    isnow: "*/*/* * *:00:00"
+    at: "2026-07-14T13:00:00Z"
+    holds: true
+  # exact value
+  - name: exact-year-holds
+    isnow: "2026// *:*:00"
+    at: "2026-03-01T08:22:00Z"
+    holds: true
+  - name: exact-year-misses
+    isnow: "2026// *:*:00"
+    at: "2027-03-01T08:22:00Z"
+    holds: false
+  # set
+  - name: set-months-holds-on-member
+    isnow: "/1,4,7,10/ *:*:00"
+    at: "2026-07-09T00:00:00Z"
+    holds: true
+  - name: set-months-misses-off-member
+    isnow: "/1,4,7,10/ *:*:00"
+    at: "2026-08-09T00:00:00Z"
+    holds: false
+  - name: set-minutes-quarter-hours
+    isnow: ":00,15,30,45"
+    at: "2026-07-14T09:30:00Z"
+    holds: true
+  - name: set-minutes-quarter-hours-misses
+    isnow: ":00,15,30,45"
+    at: "2026-07-14T09:31:00Z"
+    holds: false
+  # exclusion
+  - name: exclusion-not-first-holds-second
+    isnow: "/!1 *:*:00"
+    at: "2026-07-02T00:00:00Z"
+    holds: true
+  - name: exclusion-not-first-misses-first
+    isnow: "/!1 *:*:00"
+    at: "2026-07-01T00:00:00Z"
+    holds: false
+  # span
+  - name: span-hours-inclusive-low
+    isnow: "8-12"
+    at: "2026-07-14T08:00:00Z"
+    holds: true
+  - name: span-hours-inclusive-high
+    isnow: "8-12"
+    at: "2026-07-14T12:00:00Z"
+    holds: true
+  - name: span-hours-excludes-outside
+    isnow: "8-12"
+    at: "2026-07-14T13:00:00Z"
+    holds: false
+  - name: span-weekday-mon-fri-holds
+    isnow: "M-F noon"
+    at: "2026-07-15T12:00:00Z"
+    holds: true
+  - name: span-weekday-mon-fri-misses-weekend
+    isnow: "M-F noon"
+    at: "2026-07-18T12:00:00Z"
+    holds: false
+  - name: span-wraps-hours-22-2
+    isnow: "22-2"
+    at: "2026-07-14T01:00:00Z"
+    holds: true
+  - name: span-wraps-hours-22-2-misses-mid
+    isnow: "22-2"
+    at: "2026-07-14T12:00:00Z"
+    holds: false
+  - name: span-open-high-days
+    isnow: "*/*/29-* *:*:00"
+    at: "2026-07-31T00:00:00Z"
+    holds: true
+  - name: span-open-high-days-misses-28
+    isnow: "*/*/29-* *:*:00"
+    at: "2026-07-28T00:00:00Z"
+    holds: false
+  # from-end value (tail)
+  - name: from-end-last-day-of-month
+    isnow: "*/*/-1 *:*:00"
+    at: "2026-02-28T00:00:00Z"
+    holds: true
+  - name: from-end-last-day-misses-27
+    isnow: "*/*/-1 *:*:00"
+    at: "2026-02-27T00:00:00Z"
+    holds: false
+  - name: from-end-last-15-days-december
+    isnow: "*/12/-15 *:*:00"
+    at: "2026-12-17T00:00:00Z"
+    holds: true
+  - name: from-end-last-15-days-december-misses-16
+    isnow: "*/12/-15 *:*:00"
+    at: "2026-12-16T00:00:00Z"
+    holds: false
+  # unit compound tail
+  - name: from-end-unit-compound-two-weeks-one-day
+    isnow: "*/12/-2w1d *:*:00"
+    at: "2026-12-17T00:00:00Z"
+    holds: true
+  - name: from-end-unit-compound-misses-before
+    isnow: "*/12/-2w1d *:*:00"
+    at: "2026-12-16T00:00:00Z"
+    holds: false
+  # step — arithmetic progression
+  - name: step-every-15-minutes-holds
+    isnow: ":0+[15]"
+    at: "2026-07-14T09:30:00Z"
+    holds: true
+  - name: step-every-15-minutes-misses
+    isnow: ":0+[15]"
+    at: "2026-07-14T09:20:00Z"
+    holds: false
+  - name: step-every-9-seconds-holds
+    isnow: "::+[9]"
+    at: "2026-07-14T06:00:18Z"
+    holds: true
+  - name: step-every-9-seconds-misses
+    isnow: "::+[9]"
+    at: "2026-07-14T06:00:10Z"
+    holds: false
+  - name: step-descending-minutes-holds-59
+    isnow: ":-[15]"
+    at: "2026-07-14T09:59:00Z"
+    holds: true
+  - name: step-descending-minutes-holds-44
+    isnow: ":-[15]"
+    at: "2026-07-14T09:44:00Z"
+    holds: true
+  - name: step-descending-minutes-misses-45
+    isnow: ":-[15]"
+    at: "2026-07-14T09:45:00Z"
+    holds: false
+  # step — weekday occurrence selection
+  - name: step-third-monday-holds
+    isnow: "Monday+[3] noon"
+    at: "2026-01-19T12:00:00Z"
+    holds: true
+  - name: step-third-monday-misses-first
+    isnow: "Monday+[3] noon"
+    at: "2026-01-05T12:00:00Z"
+    holds: false
+  - name: step-last-thursday-holds
+    isnow: "11/ Th-[1] noon"
+    at: "2026-11-26T12:00:00Z"
+    holds: true
+  - name: step-last-thursday-misses-earlier
+    isnow: "11/ Th-[1] noon"
+    at: "2026-11-19T12:00:00Z"
+    holds: false
+  - name: step-first-and-third-monday-holds-first
+    isnow: "M+[1,3] noon"
+    at: "2026-01-05T12:00:00Z"
+    holds: true
+  - name: step-first-and-third-monday-misses-second
+    isnow: "M+[1,3] noon"
+    at: "2026-01-12T12:00:00Z"
+    holds: false
+  # week-unit step
+  - name: step-week-granular-third-week-holds
+    isnow: "/+[3w] noon"
+    at: "2026-01-22T12:00:00Z"
+    holds: true
+  - name: step-week-granular-third-week-misses
+    isnow: "/+[3w] noon"
+    at: "2026-01-08T12:00:00Z"
+    holds: false
+  # set distributes algebra over members
+  - name: set-distributes-step
+    isnow: "M+[1],W+[2] noon"
+    at: "2026-01-14T12:00:00Z"
+    holds: true

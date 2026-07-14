@@ -10,6 +10,21 @@ A pattern matches an instant when *every* field's constraint holds for that inst
 
 The grammar ([IsnowParser.g4](IsnowParser.g4) + [IsnowLexer.g4](IsnowLexer.g4)) recognizes structure and the field algebra; everything labeled **semantic** below is resolved by an implementation walking the parse tree.
 
+## 0. Terminology
+
+Every artifact — this spec, the grammar comments, code identifiers, CLI help, API fields, and docs — uses these names and no synonyms.
+
+- **isnow** — the language, and (as a countable noun) a pattern string in it: *an isnow*, plural *isnows*.
+- **instant** — a specific date-time, resolved to the second in a named zone, that an isnow is tested against.
+- **holds** — the membership test, the language's defining operation: an isnow *holds at* an instant when every field constraint is satisfied. `is(isnow, instant) → bool`.
+- **occurrence** — an instant at which an isnow holds; *next/previous occurrence* are derived from `holds`.
+- **canonical form** — the fully-qualified seven-field expansion `Y/m/d w H:M:S`; producing it is **canonicalizing**.
+- **shorthand ladder** — the positional default rules (§4) that let a short isnow stand for its canonical form.
+- **field** — one of the seven constraint slots (year, month, day, weekday, hour, minute, second); **group** — the date/bare/time runs that carry them; **group separator** — whitespace, `.`, or `_`.
+- **algebra** — the uniform per-field constructs: **wildcard** `*`, **exact value**, **set** `,`, **exclusion** `!`, **span** `v-v`, **from-end value** `-v`, **unit compound** `NwNd`, **step** `±[N]` over an **anchor**, and **symbol** (a weekday/time name).
+- **since bound** `>`/`>=`, **until bound** `<`/`<=`, and the **window** they define; **field-local** vs **continuous stepping** (§5).
+- **nowtab** — a table of `<isnow>  <command>` entries (the crontab analog); **builder** — any interface that composes an isnow from named field inputs.
+
 ## 1. Structure
 
 A fully-qualified pattern is seven fields in three groups plus optional bounds:

@@ -5,18 +5,21 @@
 # single source of truth.
 #
 # IsnowLexer.g4 + IsnowParser.g4 are the source of truth (SPECIFICATION.md).
-# This Makefile compiles them to each language with ANTLR4, into gen/<lang>/.
-# Lift a generated tree into a new isnow.<lang> implementation repo, or retarget
-# these rules at a sibling repo once one exists (see up.grammar for that model).
+# This Makefile compiles them to each language with ANTLR4. The `go` and `js`
+# targets write directly into the sibling implementation repos (the up.grammar
+# model): the org tree is mounted so ANTLR can emit into ../isnow.go and
+# ../isnow.js. Languages without an implementation repo emit into gen/<lang>/.
 # The Java/ANTLR toolchain is isolated in Docker; generated code is committed in
 # each implementation, so their normal builds stay toolchain-free.
 
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
+ORG          := $(realpath $(MAKEFILE_DIR)/..)
 ANTLR_IMAGE  := isnow-antlr
 LEXER        := IsnowLexer.g4
 PARSER       := IsnowParser.g4
 
-RUN := docker run --rm -v "$(MAKEFILE_DIR)":/work -w /work $(ANTLR_IMAGE)
+# Mount the whole org tree so a target can write into a sibling repo.
+RUN := docker run --rm -v "$(ORG)":/work -w /work/isnow $(ANTLR_IMAGE)
 
 .PHONY: help
 help: ## Show this help
@@ -27,22 +30,23 @@ image: docker/antlr/Dockerfile ## Build the pinned ANTLR4 generator image
 	docker build -t $(ANTLR_IMAGE) docker/antlr
 
 .PHONY: gen
-gen: go python js java cpp ## Generate every stock-ANTLR target into gen/<lang>/
+gen: go js python java cpp ## Generate every target (siblings + gen/<lang>/)
 
 .PHONY: go
-go: image ## Generate the Go parser into gen/go
-	$(RUN) -Dlanguage=Go -package isnowgrammar -o gen/go $(LEXER)
-	$(RUN) -Dlanguage=Go -visitor -package isnowgrammar -lib gen/go -o gen/go $(PARSER)
+go: image ## Generate the Go parser into ../isnow.go/internal/isnowgrammar
+	$(RUN) -Dlanguage=Go -package isnowgrammar -o /work/isnow.go/internal/isnowgrammar $(LEXER)
+	$(RUN) -Dlanguage=Go -visitor -package isnowgrammar -lib /work/isnow.go/internal/isnowgrammar -o /work/isnow.go/internal/isnowgrammar $(PARSER)
+	gofmt -w $(ORG)/isnow.go/internal/isnowgrammar
+
+.PHONY: js
+js: image ## Generate the JavaScript parser into ../isnow.js/src/isnowgrammar
+	$(RUN) -Dlanguage=JavaScript -o /work/isnow.js/src/isnowgrammar $(LEXER)
+	$(RUN) -Dlanguage=JavaScript -visitor -lib /work/isnow.js/src/isnowgrammar -o /work/isnow.js/src/isnowgrammar $(PARSER)
 
 .PHONY: python
 python: image ## Generate the Python 3 parser into gen/python
 	$(RUN) -Dlanguage=Python3 -o gen/python $(LEXER)
 	$(RUN) -Dlanguage=Python3 -visitor -lib gen/python -o gen/python $(PARSER)
-
-.PHONY: js
-js: image ## Generate the JavaScript parser into gen/js
-	$(RUN) -Dlanguage=JavaScript -o gen/js $(LEXER)
-	$(RUN) -Dlanguage=JavaScript -visitor -lib gen/js -o gen/js $(PARSER)
 
 .PHONY: java
 java: image ## Generate the Java parser into gen/java
@@ -54,6 +58,10 @@ cpp: image ## Generate the C++ parser into gen/cpp (ANTLR has no plain-C target)
 	$(RUN) -Dlanguage=Cpp -o gen/cpp $(LEXER)
 	$(RUN) -Dlanguage=Cpp -visitor -lib gen/cpp -o gen/cpp $(PARSER)
 
+.PHONY: corpus
+corpus: ## Validate the conformance corpus (YAML well-formed, names unique)
+	python3 conformance/validate.py
+
 .PHONY: clean
-clean: ## Remove generated parsers
+clean: ## Remove locally generated parsers
 	rm -rf gen

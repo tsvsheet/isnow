@@ -1,0 +1,66 @@
+# Bounds, windows, and continuous stepping (specs/contracts/semantics.md §Bounds).
+cases:
+  # since/until positional comparison
+  - name: since-year-holds-in-range
+    isnow: "12 >=2011"
+    at: "2015-06-01T12:00:00Z"
+    holds: true
+  - name: since-year-misses-before
+    isnow: "12 >=2011"
+    at: "2010-06-01T12:00:00Z"
+    holds: false
+  - name: until-monthday-exclusive-holds
+    isnow: "12 <9/1"
+    at: "2026-08-31T12:00:00Z"
+    holds: true
+  - name: until-monthday-exclusive-misses-on-boundary
+    isnow: "12 <9/1"
+    at: "2026-09-01T12:00:00Z"
+    holds: false
+  - name: since-time-inclusive-holds-boundary
+    isnow: "::+[9] >=6 <=18"
+    at: "2026-07-14T06:00:00Z"
+    holds: true
+  - name: since-time-holds-in-window
+    isnow: "::+[9] >=6 <=18"
+    at: "2026-07-14T12:00:09Z"
+    holds: true
+  - name: until-time-inclusive-holds-boundary
+    isnow: "::+[9] >=6 <=18"
+    at: "2026-07-14T18:00:00Z"
+    holds: true
+  - name: time-window-misses-before-since
+    isnow: "::+[9] >=6 <=18"
+    at: "2026-07-14T05:59:00Z"
+    holds: false
+  - name: time-window-misses-after-until
+    isnow: "::+[9] >=6 <=18"
+    at: "2026-07-14T18:00:09Z"
+    holds: false
+  # bounded year range
+  - name: bounded-year-range-holds-inside
+    isnow: "/1+[3w] 12 >=2011 <2016"
+    at: "2013-01-24T12:00:00Z"
+    holds: true
+  - name: bounded-year-range-misses-at-end
+    isnow: "12 >=2011 <2016"
+    at: "2016-01-01T12:00:00Z"
+    holds: false
+  # continuous stepping: a non-dividing step. Seconds :+[7] from 06:00:00
+  # within a daily window >=6 <=7 restarts each day at 06:00:00.
+  - name: continuous-step-holds-window-start
+    isnow: "::+[7] >=6 <=7"
+    at: "2026-07-14T06:00:00Z"
+    holds: true
+  - name: continuous-step-holds-multiple-of-seven
+    isnow: "::+[7] >=6 <=7"
+    at: "2026-07-14T06:00:14Z"
+    holds: true
+  - name: continuous-step-misses-off-phase
+    isnow: "::+[7] >=6 <=7"
+    at: "2026-07-14T06:00:10Z"
+    holds: false
+  - name: continuous-step-restarts-next-day
+    isnow: "::+[7] >=6 <=7"
+    at: "2026-07-15T06:00:00Z"
+    holds: true

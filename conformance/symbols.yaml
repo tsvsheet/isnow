@@ -1,0 +1,61 @@
+# Symbolic name resolution (specs/contracts/semantics.md §Symbols).
+cases:
+  # weekday minimal-unique letters
+  - name: symbol-m-is-monday
+    isnow: "M noon"
+    canonical: "*/*/* Monday 12:00:00"
+  - name: symbol-tu-is-tuesday
+    isnow: "Tu noon"
+    canonical: "*/*/* Tuesday 12:00:00"
+  - name: symbol-th-is-thursday
+    isnow: "Th noon"
+    canonical: "*/*/* Thursday 12:00:00"
+  - name: symbol-su-is-sunday
+    isnow: "Su noon"
+    canonical: "*/*/* Sunday 12:00:00"
+  - name: symbol-case-insensitive
+    isnow: "monday noon"
+    canonical: "*/*/* Monday 12:00:00"
+  - name: symbol-full-name
+    isnow: "Wednesday noon"
+    canonical: "*/*/* Wednesday 12:00:00"
+  # runs
+  - name: symbol-run-mwf
+    isnow: "MWF noon"
+    canonical: "*/*/* Monday,Wednesday,Friday 12:00:00"
+  - name: symbol-run-ss-weekend
+    isnow: "SS noon"
+    canonical: "*/*/* Sunday,Saturday 12:00:00"
+  - name: symbol-run-tt
+    isnow: "TT noon"
+    canonical: "*/*/* Tuesday,Thursday 12:00:00"
+  # time symbols
+  - name: symbol-noon
+    isnow: "noon"
+    canonical: "*/*/* * 12:00:00"
+  - name: symbol-midnight
+    isnow: "midnight"
+    canonical: "*/*/* * 00:00:00"
+  - name: symbol-midday-is-noon
+    isnow: "midday"
+    canonical: "*/*/* * 12:00:00"
+  - name: symbol-mn-is-midnight
+    isnow: "mn"
+    canonical: "*/*/* * 00:00:00"
+  - name: symbol-md-is-midday
+    isnow: "md"
+    canonical: "*/*/* * 12:00:00"
+  - name: symbol-n-is-noon
+    isnow: "n"
+    canonical: "*/*/* * 12:00:00"
+  # m stays Monday even though "midnight" starts with m
+  - name: symbol-m-not-midnight
+    isnow: "M"
+    canonical: "*/*/* Monday *:*:00"
+  # numeric weekday in the three-group form
+  - name: symbol-numeric-weekday-monday
+    isnow: "*/*/* 2 12:00"
+    canonical: "*/*/* Monday 12:00:00"
+  - name: symbol-numeric-weekday-saturday
+    isnow: "*/*/* 7 12:00"
+    canonical: "*/*/* Saturday 12:00:00"
