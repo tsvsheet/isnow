@@ -1,6 +1,9 @@
-# v0.2 intervals: "every N units" periodic recurrences (specs/contracts/semantics.md
-# §Intervals), epoch-anchored at 1970-01-01T00:00:00 in the evaluation zone.
+# v0.3 intervals: "every N units" periodic recurrences (specs/contracts/semantics.md
+# §Intervals), anchored hierarchically to the civil calendar (ADR 005). The stride
+# selects the smallest containing civil unit and re-aligns at its boundary; the week
+# container starts on Sunday (weekday 1).
 cases:
+  # --- container: day (sub-day strides re-align at midnight) ---
   - name: interval-90-minutes-canonical
     isnow: "+[90mn]"
     canonical: "*/*/* * *:*:00 +[90mn]"
@@ -16,19 +19,67 @@ cases:
     isnow: "+[90mn]"
     at: "2026-07-14T01:00:00Z"
     holds: false
-  - name: interval-25-hours-drifts-across-days
+  - name: interval-2-hours-within-day
+    isnow: "+[2h]"
+    at: "2026-07-14T22:00:00Z"
+    holds: true
+  - name: interval-2-hours-misses-odd-hour
+    isnow: "+[2h]"
+    at: "2026-07-14T23:00:00Z"
+    holds: false
+  # --- container: week (day/hour strides re-align every Sunday) ---
+  - name: interval-3-days-holds-sunday
+    isnow: "+[3d]"
+    at: "2026-07-12T00:00:00Z"
+    holds: true
+  - name: interval-3-days-holds-wednesday
+    isnow: "+[3d]"
+    at: "2026-07-15T00:00:00Z"
+    holds: true
+  - name: interval-3-days-misses-tuesday
+    isnow: "+[3d]"
+    at: "2026-07-14T00:00:00Z"
+    holds: false
+  - name: interval-3-days-week-boundary-gap
+    isnow: "+[3d]"
+    from: "2026-07-18T00:00:00Z"
+    next:
+      - "2026-07-19T00:00:00Z"
+      - "2026-07-22T00:00:00Z"
+      - "2026-07-25T00:00:00Z"
+  - name: interval-25-hours-walks-the-week
     isnow: "+[25h]"
     from: "2026-07-14T00:00:00Z"
     next:
-      - "2026-07-14T23:00:00Z"
-      - "2026-07-16T00:00:00Z"
-      - "2026-07-17T01:00:00Z"
-  - name: interval-10-days-at-midnight
+      - "2026-07-14T02:00:00Z"
+      - "2026-07-15T03:00:00Z"
+      - "2026-07-16T04:00:00Z"
+  # --- container: month (day strides 8..31 re-align on the 1st) ---
+  - name: interval-10-days-within-month
     isnow: "+[10d]"
     from: "2026-07-14T00:00:00Z"
     next:
-      - "2026-07-16T00:00:00Z"
-      - "2026-07-26T00:00:00Z"
+      - "2026-07-21T00:00:00Z"
+      - "2026-07-31T00:00:00Z"
+      - "2026-08-01T00:00:00Z"
+  - name: interval-10-days-holds-first
+    isnow: "+[10d]"
+    at: "2026-07-01T00:00:00Z"
+    holds: true
+  - name: interval-10-days-short-february
+    isnow: "+[10d]"
+    at: "2026-02-28T00:00:00Z"
+    holds: false
+  # --- container: year (day strides > 31 re-align on Jan 1) ---
+  - name: interval-40-days-within-year
+    isnow: "+[40d]"
+    at: "2026-02-10T00:00:00Z"
+    holds: true
+  - name: interval-40-days-misses-year-end
+    isnow: "+[40d]"
+    at: "2026-12-31T00:00:00Z"
+    holds: false
+  # --- second grain owns the second field ---
   - name: interval-30-seconds-canonical
     isnow: "+[30s]"
     canonical: "*/*/* * *:*:* +[30s]"
@@ -40,6 +91,7 @@ cases:
     isnow: "+[30s]"
     at: "2026-07-14T09:00:15Z"
     holds: false
+  # --- composition with fields and bounds ---
   - name: interval-with-weekday-and-bounds
     isnow: "M-F +[90mn] >=6 <=18"
     at: "2026-07-14T07:30:00Z"
