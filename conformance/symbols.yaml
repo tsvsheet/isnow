@@ -59,3 +59,13 @@ cases:
   - name: symbol-numeric-weekday-saturday
     isnow: "*/*/* 7 12:00"
     canonical: "*/*/* Saturday 12:00:00"
+  # proleptic Gregorian: a two-digit year (0..99) must compute the correct
+  # weekday, not the JS Date.UTC 1900+year remap. 0050-01-01 is a Saturday.
+  - name: weekday-proleptic-year-50-saturday
+    isnow: "Sa"
+    at: "0050-01-01T00:00:00Z"
+    holds: true
+  - name: weekday-proleptic-year-50-not-sunday
+    isnow: "Su"
+    at: "0050-01-01T00:00:00Z"
+    holds: false

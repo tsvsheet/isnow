@@ -99,3 +99,6 @@ cases:
   - name: error-zero-interval
     isnow: "+[0mn]"
     error: range
+  - name: error-setpos-star-endpoint
+    isnow: "*/*/* *-M+[1] 12:00"
+    error: context
