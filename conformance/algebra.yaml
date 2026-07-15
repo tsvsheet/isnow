@@ -172,3 +172,26 @@ cases:
     isnow: "M+[1],W+[2] noon"
     at: "2026-01-14T12:00:00Z"
     holds: true
+  # v0.2 BYSETPOS: nth day of the month matching a weekday span (last business day)
+  - name: setpos-last-business-day-holds
+    isnow: "M-F-[1] noon"
+    at: "2026-02-27T12:00:00-05:00"
+    holds: true
+  - name: setpos-last-business-day-misses-weekend
+    isnow: "M-F-[1] noon"
+    at: "2026-02-28T12:00:00-05:00"
+    holds: false
+  - name: setpos-last-business-day-misses-earlier
+    isnow: "M-F-[1] noon"
+    at: "2026-02-26T12:00:00-05:00"
+    holds: false
+  - name: setpos-first-business-day-holds
+    isnow: "M-F+[1] noon"
+    at: "2026-03-02T12:00:00-05:00"
+    holds: true
+  - name: setpos-next-last-business-day
+    isnow: "M-F-[1] noon"
+    from: "2026-01-01T00:00:00-05:00"
+    next:
+      - "2026-01-30T12:00:00-05:00"
+      - "2026-02-27T12:00:00-05:00"

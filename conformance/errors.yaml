@@ -90,3 +90,6 @@ cases:
   - name: error-magnitude-overflow
     isnow: ":0+[99999999999999999999]"
     error: range
+  - name: error-setpos-index-too-large
+    isnow: "M-F+[99] noon"
+    error: range
