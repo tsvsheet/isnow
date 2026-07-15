@@ -1,0 +1,32 @@
+# v0.2 pattern-level exclusions: the pattern never holds when a `! <spec>` clause
+# holds — every weekday except a holiday (semantics.md §Exclusions).
+cases:
+  - name: exclusion-canonical
+    isnow: "M-F ! 12/25"
+    canonical: "*/*/* Monday-Friday *:*:00 ! */12/25 * *:*:*"
+  - name: exclusion-excludes-christmas
+    isnow: "M-F ! 12/25"
+    at: "2026-12-25T12:00:00Z"
+    holds: false
+  - name: exclusion-excludes-whole-day
+    isnow: "M-F ! 12/25"
+    at: "2026-12-25T23:59:00Z"
+    holds: false
+  - name: exclusion-holds-other-weekday
+    isnow: "M-F ! 12/25"
+    at: "2026-12-24T12:00:00Z"
+    holds: true
+  - name: exclusion-holiday-list
+    isnow: "noon ! 12/25 ! 1/1"
+    at: "2027-01-01T12:00:00Z"
+    holds: false
+  - name: exclusion-derivation-skips-holiday
+    isnow: "noon ! 12/25"
+    from: "2026-12-23T00:00:00Z"
+    next:
+      - "2026-12-23T12:00:00Z"
+      - "2026-12-24T12:00:00Z"
+      - "2026-12-26T12:00:00Z"
+  - name: field-exclusion-unaffected
+    isnow: "M-F !12/25"
+    canonical: "*/!12/25 Monday-Friday *:*:00"

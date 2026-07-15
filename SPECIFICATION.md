@@ -63,6 +63,8 @@ Range and increment may co-occur (`v-v±[N]`), and a set distributes the algebra
 
 **Intervals** are a separate construct — a bare group `+[N<unit>]` with a duration unit `s`/`mn`/`h`/`d` — meaning "every N units" from the civil epoch, crossing field boundaries: `+[90mn]` (every 90 minutes), `+[25h]`, `+[10d]`, `+[30s]`. Unlike a field-local step, an interval is not confined to one field's cycle. It ANDs with the rest of the pattern: `M-F +[90mn] >=6 <=18`. (Semantics: [semantics.md §Intervals](specs/contracts/semantics.md).)
 
+**Pattern-level exclusions** carve instants out: a `! <spec>` clause (a `!` set off from its sub-spec by a separator) means the isnow does not hold when the sub-spec holds. `M-F ! 12/25 ! 1/1` is every weekday except Christmas and New Year — a holiday list. The separator disambiguates it from the field-level `!v` (so `!12/25` still means "the 25th except December"). (Semantics: [semantics.md §Exclusions](specs/contracts/semantics.md).)
+
 ## 3. Symbolic names (semantic, case-insensitive, minimal-unique)
 
 - **Weekdays:** the minimal letters that uniquely identify each — `Su M Tu W Th F Sa` — plus common runs (`MWF`, `SS`, `TT`). A *default* (bare-group) weekday must be symbolic; a numeric weekday `1`–`7` (Sunday = 1) is allowed only in the explicit three-group form (date group, weekday, time group).

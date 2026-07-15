@@ -42,6 +42,15 @@ Values beyond a parent cycle's actual length never match (day `31` simply doesn'
 
 Canonical weekday names Sunday…Saturday; resolution is case-insensitive unique-prefix, with the spec's single letters (`Su M Tu W Th F Sa`) and runs `MWF`, `SS` (weekend), `TT` (Tue+Thu) always valid. **`m` is always Monday.** Time symbols are `noon`/`midday` = 12:00:00 and `midnight` = 00:00:00, resolved by case-insensitive unique prefix of the three words plus the abbreviations `mn` (midnight) and `md` (midday); `mi` and `mid` are ambiguous → `symbol` errors, as are `T` and `S`. Time symbols are valid only as a bare group.
 
+## Exclusions
+
+A **pattern-level exclusion** carves specific instants out of a pattern: the isnow does **not** hold when the exclusion's sub-spec holds. It is written `! <spec>` — a `!` set off from its sub-spec by a group separator — appearing after the main spec, interleaved with bounds: `M-F ! 12/25` is every weekday except December 25.
+
+- **Disambiguation.** The separator around `!` distinguishes a pattern exclusion from a field-level exclusion. `! 12/25` (separated) is the pattern exclusion "not on Dec 25"; `!12/25` (no separator) is the field exclusion `!12` in a date group — "the 25th of every month except December". This mirrors the grammar (`exclusion : GSEP BANG GSEP spec`).
+- **Whole-period.** An exclusion sub-spec's absent time fields default to **wildcard**, so `! 12/25` excludes all of December 25, not just midnight. Provide a time to narrow it (`! 12/25 noon`).
+- **Semantics.** `Holds(t) = main(t) ∧ bounds(t) ∧ intervals(t) ∧ ¬(any exclusion sub-spec holds at t)`. Multiple exclusions form a holiday list: `noon ! 12/25 ! 1/1 ! 7/4`.
+- **Rendering.** Exclusions render after the main form, intervals, and bounds: `M-F ! 12/25` ⇒ `*/*/* Monday-Friday *:*:00 ! */12/25 * *:*:*`.
+
 ## Intervals
 
 An **interval** is a true periodic recurrence — "every N units" — written as a bare group `+[N<unit>]` with an interval unit: `s` (second), `mn` (minute), `h` (hour), `d` (day). It is distinct from a field-local step: a step resets within one field's cycle, whereas an interval crosses field boundaries — `+[90mn]` spans hours, `+[25h]` spans days, `+[10d]` spans months.

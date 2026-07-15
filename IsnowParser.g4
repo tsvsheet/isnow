@@ -27,14 +27,20 @@ parser grammar IsnowParser;
 
 options { tokenVocab=IsnowLexer; }
 
-// A whole pattern: the main spec, then any start/end bounds. Leading and
-// trailing group separators are tolerated so callers need not trim input.
-pattern  : GSEP? spec bound* GSEP? EOF ;
+// A whole pattern: the main spec, then any start/end bounds and exclusions.
+// Leading and trailing group separators are tolerated so callers need not trim.
+pattern  : GSEP? spec (bound | exclusion)* GSEP? EOF ;
 
 // A start (>, >=) or end (<, <=) bound carries a full sub-spec whose increments
 // are evaluated over the bounded span rather than within their parent field.
 bound    : GSEP? boundOp spec ;
 boundOp  : GE | GT | LE | LT ;
+
+// A pattern-level exclusion: the pattern never holds when the sub-spec holds
+// (`! 12/25` = every day except December 25). The '!' is separated from its
+// sub-spec by a group separator, distinguishing it from a field-level exclusion
+// (`!12`, no separator, means "not the value 12" within one field).
+exclusion : GSEP BANG GSEP spec ;
 
 // A sequence of groups. The loop stops before a `GSEP boundOp` because a bound
 // operator can never begin a group, leaving that GSEP for `bound`.
