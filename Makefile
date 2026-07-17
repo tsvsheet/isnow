@@ -33,10 +33,10 @@ image: docker/antlr/Dockerfile ## Build the pinned ANTLR4 generator image
 gen: go js python java cpp ## Generate every target (siblings + gen/<lang>/)
 
 .PHONY: go
-go: image ## Generate the Go parser into ../isnow.go/internal/isnowgrammar
-	$(RUN) -Dlanguage=Go -package isnowgrammar -o /work/isnow.go/internal/isnowgrammar $(LEXER)
-	$(RUN) -Dlanguage=Go -visitor -package isnowgrammar -lib /work/isnow.go/internal/isnowgrammar -o /work/isnow.go/internal/isnowgrammar $(PARSER)
-	gofmt -w $(ORG)/isnow.go/internal/isnowgrammar
+go: image ## Generate the Go parser into ../go-isnow/internal/isnowgrammar
+	$(RUN) -Dlanguage=Go -package isnowgrammar -o /work/go-isnow/internal/isnowgrammar $(LEXER)
+	$(RUN) -Dlanguage=Go -visitor -package isnowgrammar -lib /work/go-isnow/internal/isnowgrammar -o /work/go-isnow/internal/isnowgrammar $(PARSER)
+	gofmt -w $(ORG)/go-isnow/internal/isnowgrammar
 
 .PHONY: js
 js: image ## Generate the JavaScript parser into ../isnow.js/src/isnowgrammar
