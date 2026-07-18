@@ -1,4 +1,4 @@
-# isnow — Specification (DTimpalr)
+# isnow — Specification
 
 **Date/Time Pattern Language for Repetition.** Status: draft 0.1.0 (2026-07-13), recovered and consolidated from the original 2011 design.
 

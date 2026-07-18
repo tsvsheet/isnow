@@ -1,6 +1,6 @@
 # isnow
 
-> **DTimpalr — a Date/Time Pattern Language for Repetition.** One compact expression describes anything from a fixed instant to a complex recurrence, and answers a single question: _is it now?_
+> **A date/time pattern language for repetition.** One compact expression describes anything from a fixed instant to a complex recurrence, and answers a single question: _is it now?_
 
 An **isnow** (the language, and a pattern string in it) is a **matcher**, not a generator. `*/*/1 * 12:*:00` matches every instant on the first of a month during the noon hour; an implementation exposes `is(isnow, instant)` — the isnow **holds** at an instant when every field constraint is satisfied. It is a strict superset of cron in expressiveness — sets, spans, exclusions, from-end counting, steps, and since/until bounds, over one uniform per-field algebra. Every concept has a fixed name: see [SPECIFICATION.md §0](SPECIFICATION.md#0-terminology).
 

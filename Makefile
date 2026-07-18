@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-# isnow — the one normative grammar for the DTimpalr date/time pattern
+# isnow — the one normative grammar for the isnow date/time pattern
 # language, generated to every target language so implementations parse from a
 # single source of truth.
 #

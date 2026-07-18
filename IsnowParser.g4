@@ -1,5 +1,5 @@
 /*
- * IsnowParser.g4 — the parser for isnow / DTimpalr (with IsnowLexer.g4); the
+ * IsnowParser.g4 — the parser for isnow (with IsnowLexer.g4); the
  * executable form of SPECIFICATION.md.
  *
  * A pattern is one line: a `spec` (a whitespace/'.'/'_'-separated sequence of

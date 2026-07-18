@@ -1,5 +1,5 @@
 /*
- * IsnowLexer.g4 — the lexer for isnow / DTimpalr (with IsnowParser.g4, the
+ * IsnowLexer.g4 — the lexer for isnow (with IsnowParser.g4, the
  * executable form of SPECIFICATION.md). ANTLR requires the file name to match
  * the grammar name, hence the CamelCase.
  *
