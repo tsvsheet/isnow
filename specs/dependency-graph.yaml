@@ -22,7 +22,7 @@ contexts:
     depends-on: [language-core]
     provides: [library-api-js]
   web-playground:
-    home: uplang/www.uplang.org
+    home: tsvsheet/www.tsvsheet.com
     depends-on: [js-engine]
     provides: [playground]
   docs-governance:

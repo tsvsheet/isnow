@@ -50,8 +50,8 @@ python: image ## Generate the Python 3 parser into gen/python
 
 .PHONY: java
 java: image ## Generate the Java parser into gen/java
-	$(RUN) -Dlanguage=Java -package org.uplang.isnowgrammar -o gen/java $(LEXER)
-	$(RUN) -Dlanguage=Java -visitor -package org.uplang.isnowgrammar -lib gen/java -o gen/java $(PARSER)
+	$(RUN) -Dlanguage=Java -package com.tsvsheet.isnowgrammar -o gen/java $(LEXER)
+	$(RUN) -Dlanguage=Java -visitor -package com.tsvsheet.isnowgrammar -lib gen/java -o gen/java $(PARSER)
 
 .PHONY: cpp
 cpp: image ## Generate the C++ parser into gen/cpp (ANTLR has no plain-C target)

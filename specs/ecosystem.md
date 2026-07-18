@@ -13,7 +13,7 @@ Grow isnow from a grammar-only repo into a full-featured, world-class language e
 | go-cli (the `isnow` binary) | `tsvsheet/isnow.go` `cmd/isnow` + `internal/` | [capabilities/go-cli.md](capabilities/go-cli.md) |
 | go-server (`isnow serve` HTTP API) | `tsvsheet/isnow.go` | [capabilities/go-server.md](capabilities/go-server.md) |
 | js-engine (`@tsvsheet/isnow`) | `tsvsheet/isnow.js` | [capabilities/js-engine.md](capabilities/js-engine.md) |
-| web-playground | `uplang/www.uplang.org` `/isnow/` | [capabilities/web-playground.md](capabilities/web-playground.md) |
+| web-playground | `tsvsheet/www.tsvsheet.com` `/functions/isnow/playground/` | [capabilities/web-playground.md](capabilities/web-playground.md) |
 | docs-governance (docs repos, manifest entries) | `tsvsheet/docs.isnow.go`, `tsvsheet/docs.isnow.js`, `tsvsheet/_admin` | [capabilities/docs-governance.md](capabilities/docs-governance.md) |
 
 Build order and interfaces: [dependency-graph.yaml](dependency-graph.yaml). Cross-context contracts: [contracts/](contracts/). Architectural decisions: [decisions/](decisions/).

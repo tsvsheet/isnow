@@ -2,7 +2,7 @@
 
 ## Goal
 
-An interactive isnow playground at `uplang.org/isnow/` (in `uplang/www.uplang.org`), powered by `@tsvsheet/isnow`.
+An interactive isnow playground at `tsvsheet.com/functions/isnow/playground/` (in `tsvsheet/www.tsvsheet.com`), powered by `@tsvsheet/isnow`.
 
 ## Requirements
 
@@ -13,6 +13,6 @@ An interactive isnow playground at `uplang.org/isnow/` (in `uplang/www.uplang.or
 
 ## Acceptance criteria
 
-- AC1. `make -C www.uplang.org` site build succeeds with the page included; no console errors in the built page.
+- AC1. `make -C www.tsvsheet.com` site build succeeds with the page included; no console errors in the built page.
 - AC2. Typing `M,W,F noon` shows the correct canonical form, verdict, and occurrences in the visitor's zone.
 - AC3. Builder output round-trips: composing then parsing yields the same canonical form.
