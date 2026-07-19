@@ -1,7 +1,0 @@
-# 004 — v0.1.0 implements field-local stepping; continuous stepping deferred
-
-**Decision.** For the 0.1.0 implementations, steps (`±[N]`) are **field-local in every context**, bounded or not: a step resets within its parent cycle. Bounds are fully implemented as positional windows (since/until filtering and derivation honor them). SPECIFICATION.md §5's _continuous_ stepping — a step counting across a bounded window's contiguous stretch — is **deferred to a future version**; it is the language's single most intricate semantic and is not worth shipping under-verified across two implementations.
-
-**Consequence.** The semantics contract's continuous-stepping paragraph and the conformance corpus are scoped so no case depends on the field-local/continuous distinction (every bounded-step case falls where the two coincide — the step divides the parent cycle, or the instant lies within the window's first parent cycle). When continuous stepping is implemented, it arrives with corpus cases that cross a parent-cycle boundary with a non-dividing step, and both engines adopt it together.
-
-**Alternative.** Ship a continuous-stepping implementation now — rejected: high risk of Go/JS divergence on an exotic, thinly-specified edge, against a corpus that cannot yet distinguish it. Honest partial scope beats a pinned-but-unverified behavior ([quality-budget.yaml](../quality-budget.yaml) `required_error_handling: exhaustive` applies to what ships).
