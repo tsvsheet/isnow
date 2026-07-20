@@ -1,4 +1,4 @@
-# Groups, the shorthand ladder, and canonical forms (specs/contracts/semantics.md §Ladder).
+# Groups, the shorthand ladder, and canonical forms (../SEMANTICS.md §The ladder).
 cases:
   # SPECIFICATION.md §4 table, verbatim
   - name: bare-hour-canonicalizes

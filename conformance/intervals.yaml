@@ -1,7 +1,7 @@
-# v0.3 intervals: "every N units" periodic recurrences (specs/contracts/semantics.md
-# §Intervals), anchored hierarchically to the civil calendar (ADR 005). The stride
-# selects the smallest containing civil unit and re-aligns at its boundary; the week
-# container starts on Sunday (weekday 1).
+# v0.3 intervals: "every N units" periodic recurrences (../SEMANTICS.md §Intervals),
+# anchored hierarchically to the civil calendar. The stride selects the smallest
+# containing civil unit and re-aligns at its boundary; the week container starts
+# on Sunday (weekday 1).
 cases:
   # --- container: day (sub-day strides re-align at midnight) ---
   - name: interval-90-minutes-canonical

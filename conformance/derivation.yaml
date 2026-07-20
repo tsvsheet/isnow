@@ -1,4 +1,4 @@
-# Occurrence derivation: next / prev (specs/contracts/library-api.md, semantics §Evaluation).
+# Occurrence derivation: next / prev (../SEMANTICS.md §Evaluation and time zones).
 cases:
   - name: next-daily-six-rolls-to-tomorrow
     isnow: "6"

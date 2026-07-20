@@ -18,8 +18,8 @@ This repository is the **grammar-first** home of the language: the ANTLR4 gramma
 
 - **Grammar:** [IsnowParser.g4](IsnowParser.g4) · [IsnowLexer.g4](IsnowLexer.g4)
 - **Specification (terminology + semantics):** [SPECIFICATION.md](SPECIFICATION.md)
-- **Conformance corpus:** [conformance/](conformance/) — 131 language-agnostic cases every implementation must pass. Validate with `make corpus` (no toolchain needed).
-- **Implementations:** [`tsvsheet/isnow.go`](https://github.com/tsvsheet/isnow.go) (the Go library + the `isnow` CLI and HTTP server) and [`tsvsheet/isnow.js`](https://github.com/tsvsheet/isnow.js) (the JS library + web playground).
+- **Conformance corpus:** [conformance/](conformance/) — 180 language-agnostic cases every implementation must pass. Validate with `make corpus` (no toolchain needed).
+- **Implementations:** [`tsvsheet/go-isnow`](https://github.com/tsvsheet/go-isnow) (the Go library), [`tsvsheet/isnow.go`](https://github.com/tsvsheet/isnow.go) (the `isnow` CLI and HTTP server, built on it), and [`tsvsheet/isnow.js`](https://github.com/tsvsheet/isnow.js) (the JS library + web playground).
 - **Generate a parser:** `make image && make go` writes the Go parser into `../isnow.go/internal/isnowgrammar`, `make js` into `../isnow.js/src/isnowgrammar`; `python`/`java`/`cpp` land in `gen/<lang>/` for future implementations. `make help` lists targets. The Java/ANTLR toolchain is isolated in Docker; nothing else is needed to regenerate.
 
 **Status:** Draft 0.1.0 — recovered and consolidated from the original 2011 design.

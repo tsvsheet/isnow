@@ -1,4 +1,4 @@
-# Symbolic name resolution (specs/contracts/semantics.md §Symbols).
+# Symbolic name resolution (../SEMANTICS.md §Symbols).
 cases:
   # weekday minimal-unique letters
   - name: symbol-m-is-monday

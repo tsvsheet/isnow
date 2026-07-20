@@ -1,4 +1,4 @@
-# Rejected inputs, by stable error code (specs/contracts/semantics.md; codes:
+# Rejected inputs, by stable error code (../SEMANTICS.md; codes:
 # syntax, symbol, range, context).
 cases:
   # syntax — the grammar rejects the token stream
@@ -65,7 +65,7 @@ cases:
   - name: error-numeric-weekday-without-three-groups
     isnow: "2 12:00"
     error: context
-  # v0.2 guards: silent-wrong footguns are now hard errors (semantics.md §Algebra)
+  # v0.2 guards: silent-wrong footguns are now hard errors (../SEMANTICS.md §Algebra semantics)
   - name: error-step-stride-exceeds-minute-cycle
     isnow: ":0+[90]"
     error: range

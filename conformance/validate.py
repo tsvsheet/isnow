@@ -5,7 +5,7 @@ Asserts, without needing any implementation: every YAML file parses, every case
 has a unique name and exactly one recognized shape, and every `error` value is
 one of the four stable codes. Exits non-zero with a report on any violation.
 
-Contract: specs/contracts/conformance-corpus.md.
+Case format: README.md in this directory.
 """
 from __future__ import annotations
 

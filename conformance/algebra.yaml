@@ -1,4 +1,4 @@
-# The uniform per-field algebra (specs/contracts/semantics.md §Algebra semantics).
+# The uniform per-field algebra (../SEMANTICS.md §Algebra semantics).
 # All at/holds cases evaluate in the offset given.
 cases:
   # wildcard

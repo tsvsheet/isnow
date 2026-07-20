@@ -1,4 +1,4 @@
-# Bounds, windows, and continuous stepping (specs/contracts/semantics.md §Bounds).
+# Bounds, windows, and stepping under bounds (../SEMANTICS.md §Bounds).
 cases:
   # since/until positional comparison
   - name: since-year-holds-in-range

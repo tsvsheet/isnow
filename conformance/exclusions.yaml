@@ -1,5 +1,5 @@
 # v0.2 pattern-level exclusions: the pattern never holds when a `! <spec>` clause
-# holds — every weekday except a holiday (semantics.md §Exclusions).
+# holds — every weekday except a holiday (../SEMANTICS.md §Exclusions).
 cases:
   - name: exclusion-canonical
     isnow: "M-F ! 12/25"
